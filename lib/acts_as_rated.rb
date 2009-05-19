@@ -95,15 +95,6 @@ module ActiveRecord #:nodoc:
           rater_class  = options[:rater_class]  || 'User'
           stats_class  = options[:stats_class]  || 'RatingStatistic' if options[:with_stats_table]
 
-          unless Object.const_defined?(rating_class)
-            Object.class_eval <<-EOV
-              class #{rating_class} < ActiveRecord::Base
-                belongs_to :rated, :polymorphic => true
-                #{options[:no_rater] ? '' : "belongs_to :rater, :class_name => #{rater_class}, :foreign_key => :rater_id"}
-              end
-            EOV
-          end
-
           unless stats_class.nil? || Object.const_defined?(stats_class)
             Object.class_eval <<-EOV
               class #{stats_class} < ActiveRecord::Base
