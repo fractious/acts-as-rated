@@ -140,7 +140,7 @@ module ActiveRecord #:nodoc:
         def rating_average
           return self.rating_avg if attributes.has_key?('rating_avg')
           return (rating_statistic.rating_avg || 0) rescue 0 if acts_as_rated_options[:stats_class]
-          avg = ratings.average(:rating) 
+          avg = ratings.calculate(:avg, :rating) 
           avg = 0 if avg.nan?
           avg
         end
@@ -170,7 +170,7 @@ module ActiveRecord #:nodoc:
         def rated_total
           return self.rating_total || 0 if attributes.has_key? 'rating_total'
           return (rating_statistic.rating_total || 0) rescue 0 if acts_as_rated_options[:stats_class]
-          ratings.sum(:rating) 
+          ratings.calculate(:sum, :rating) 
         end
             
         # Rate the object with or without a rater - create new or update as needed
