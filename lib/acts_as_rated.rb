@@ -141,7 +141,7 @@ module ActiveRecord #:nodoc:
           return self.rating_avg if attributes.has_key?('rating_avg')
           return (rating_statistic.rating_avg || 0) rescue 0 if acts_as_rated_options[:stats_class]
           avg = ratings.calculate(:avg, :rating) 
-          avg = 0 if avg.nan?
+          avg = 0 if avg.nil? or avg.nan?
           avg
         end
 
@@ -244,7 +244,7 @@ module ActiveRecord #:nodoc:
                 target.rating_count -= 1
                 target.rating_total -= r.rating
                 target.rating_avg = target.rating_total.to_f / target.rating_count
-                target.rating_avg = 0 if target.rating_avg.nan?
+                target.rating_avg = 0 if target.rating_avg.nil? or target.rating_avg.nan?
               end
             end
 
